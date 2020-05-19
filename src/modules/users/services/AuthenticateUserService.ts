@@ -20,7 +20,7 @@ interface IResponse {
 @injectable()
 class AuthenticateUserService {
   constructor(
-    @inject('UserRepository')
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
@@ -44,10 +44,16 @@ class AuthenticateUserService {
 
     const { secret, expiresIn } = authConfig.jwt;
 
-    const token = sign({}, secret, {
-      subject: user.id,
-      expiresIn,
-    });
+    let token = '';
+
+    if (secret) {
+      token = sign({}, secret, {
+        subject: user.id,
+        expiresIn,
+      });
+    } else {
+      throw new AppError('Secret is not valid');
+    }
 
     return {
       user,
