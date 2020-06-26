@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import { string } from '@hapi/joi';
 import ForgotPasswordController from '../controllers/ForgotPasswordController';
 import ResetPasswordController from '../controllers/ResetPasswordController';
 
@@ -12,7 +11,7 @@ passwordRouter.post(
   '/forgot',
   celebrate({
     [Segments.BODY]: {
-      email: string().email().required(),
+      email: Joi.string().email().required(),
     },
   }),
   forgotPasswordController.create,
